@@ -56,141 +56,149 @@ const Index = () => {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
 
+  // Точные цвета как на макете
   const sidebarBg = dark ? "#0A0F1D" : "#FFFFFF";
-  const pageBg = dark ? "#050810" : "#F2F2F2";
+  const pageBg = "#F2F2F2";
+  const pageBgActual = dark ? "#1A1F2E" : "#F2F2F2";
   const textColor = dark ? "#F2F2F2" : "#0A0F1D";
-  const mutedColor = dark ? "#6E7382" : "#8A8F9A";
-  const borderColor = dark ? "#161B29" : "#E6E7EA";
+  const mutedColor = dark ? "#5C6273" : "#A8ACB5";
+  const iconMuted = dark ? "#7A7F8C" : "#9DA1AB";
+  const borderColor = dark ? "#1A1F2E" : "#EFEFEF";
   const accent = "#7C5CFF";
-  const accentSoft = dark ? "#1A1635" : "#EFEAFF";
+  const accentSoft = dark ? "#1F1A3D" : "#F1EDFF";
+
+  const expandedWidth = 240;
+  const collapsedWidth = 64;
 
   return (
     <div
       className="min-h-screen flex font-golos"
-      style={{ background: pageBg, color: textColor }}
+      style={{ background: pageBgActual, color: textColor }}
     >
       {/* Sidebar */}
       <aside
         className="relative flex flex-col h-screen sticky top-0 shrink-0 transition-all duration-300 ease-out"
         style={{
-          width: collapsed ? 72 : 280,
+          width: collapsed ? collapsedWidth : expandedWidth,
           background: sidebarBg,
           borderRight: `1px solid ${borderColor}`,
+          borderRadius: collapsed ? "0 20px 20px 0" : "0 20px 20px 0",
         }}
       >
-        {/* Top: logo + collapse/settings */}
-        <div
-          className="flex items-center justify-between h-16 px-4"
-          style={{ borderBottom: `1px solid ${borderColor}` }}
-        >
+        {/* Top: logo + settings/expand */}
+        <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-4 pt-5 pb-4`}>
           {!collapsed ? (
-            <div className="flex items-center gap-2">
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white"
-                style={{ background: accent }}
-              >
-                D
-              </div>
-              <span className="text-base font-semibold" style={{ color: textColor }}>
-                DesignLib
-              </span>
-            </div>
-          ) : (
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white mx-auto"
-              style={{ background: accent }}
-            >
-              D
-            </div>
-          )}
-
-          {!collapsed ? (
-            <div className="relative">
-              <button
-                onClick={() => setSettingsOpen(!settingsOpen)}
-                className="w-8 h-8 flex items-center justify-center rounded-md transition-colors"
-                style={{ color: mutedColor }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = accentSoft)}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-                aria-label="Настройки"
-              >
-                <Icon name="Settings" size={16} />
-              </button>
-
-              {settingsOpen && (
-                <div
-                  className="absolute right-0 top-10 z-50 w-52 p-2 rounded-xl shadow-xl animate-fade-in"
-                  style={{
-                    background: sidebarBg,
-                    border: `1px solid ${borderColor}`,
-                  }}
-                >
+            <>
+              <div className="flex items-center gap-2">
+                <div className="relative w-7 h-7 flex items-center justify-center">
                   <div
-                    className="text-[10px] font-semibold tracking-[0.18em] uppercase px-2 pt-1 pb-2"
-                    style={{ color: mutedColor }}
-                  >
-                    Тема
-                  </div>
-                  <button
-                    onClick={() => { setDark(false); setSettingsOpen(false); }}
-                    className="w-full flex items-center gap-2 px-2 py-2 rounded-md text-sm transition-colors"
-                    style={{
-                      background: !dark ? accentSoft : "transparent",
-                      color: !dark ? accent : textColor,
-                    }}
-                  >
-                    <Icon name="Sun" size={14} />
-                    <span>Светлая</span>
-                    {!dark && <Icon name="Check" size={14} style={{ marginLeft: "auto" }} />}
-                  </button>
-                  <button
-                    onClick={() => { setDark(true); setSettingsOpen(false); }}
-                    className="w-full flex items-center gap-2 px-2 py-2 rounded-md text-sm transition-colors"
-                    style={{
-                      background: dark ? accentSoft : "transparent",
-                      color: dark ? accent : textColor,
-                    }}
-                  >
-                    <Icon name="Moon" size={14} />
-                    <span>Тёмная</span>
-                    {dark && <Icon name="Check" size={14} style={{ marginLeft: "auto" }} />}
-                  </button>
+                    className="absolute inset-0 rounded-full"
+                    style={{ background: accent, opacity: 0.95 }}
+                  />
+                  <span className="relative font-bold text-white text-sm">D</span>
                 </div>
-              )}
-            </div>
+                <span className="text-[15px] font-semibold tracking-tight" style={{ color: textColor }}>
+                  DesignLib
+                </span>
+              </div>
+
+              <div className="relative">
+                <button
+                  onClick={() => setSettingsOpen(!settingsOpen)}
+                  className="w-7 h-7 flex items-center justify-center rounded-md"
+                  style={{ color: iconMuted }}
+                  aria-label="Настройки"
+                >
+                  <Icon name="Settings" size={16} />
+                </button>
+
+                {settingsOpen && (
+                  <div
+                    className="absolute right-0 top-9 z-50 w-44 p-1.5 rounded-xl shadow-lg animate-fade-in"
+                    style={{
+                      background: sidebarBg,
+                      border: `1px solid ${borderColor}`,
+                    }}
+                  >
+                    <div
+                      className="text-[10px] font-semibold tracking-[0.18em] uppercase px-2.5 pt-1 pb-1.5"
+                      style={{ color: mutedColor }}
+                    >
+                      Тема
+                    </div>
+                    <button
+                      onClick={() => { setDark(false); setSettingsOpen(false); }}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-[13px]"
+                      style={{
+                        background: !dark ? accentSoft : "transparent",
+                        color: !dark ? accent : textColor,
+                      }}
+                    >
+                      <Icon name="Sun" size={14} />
+                      <span className="font-medium">Светлая</span>
+                      {!dark && <Icon name="Check" size={13} style={{ marginLeft: "auto" }} />}
+                    </button>
+                    <button
+                      onClick={() => { setDark(true); setSettingsOpen(false); }}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-[13px]"
+                      style={{
+                        background: dark ? accentSoft : "transparent",
+                        color: dark ? accent : textColor,
+                      }}
+                    >
+                      <Icon name="Moon" size={14} />
+                      <span className="font-medium">Тёмная</span>
+                      {dark && <Icon name="Check" size={13} style={{ marginLeft: "auto" }} />}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
           ) : (
-            <button
-              onClick={() => setCollapsed(false)}
-              className="absolute -right-3 top-5 w-6 h-6 rounded-full flex items-center justify-center shadow-sm"
-              style={{
-                background: accentSoft,
-                color: accent,
-                border: `1px solid ${borderColor}`,
-              }}
-              aria-label="Развернуть"
-            >
-              <Icon name="ChevronRight" size={12} />
-            </button>
+            <div className="relative w-7 h-7 flex items-center justify-center">
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{ background: accent, opacity: 0.95 }}
+              />
+              <span className="relative font-bold text-white text-sm">D</span>
+            </div>
           )}
         </div>
 
+        {/* Expand chevron (absolutely positioned next to logo) */}
+        {collapsed && (
+          <button
+            onClick={() => setCollapsed(false)}
+            className="absolute right-3 top-6 w-5 h-5 rounded-full flex items-center justify-center"
+            style={{
+              background: accentSoft,
+              color: accent,
+            }}
+            aria-label="Развернуть"
+          >
+            <Icon name="ChevronRight" size={11} />
+          </button>
+        )}
+
         {/* Search */}
-        <div className="px-3 py-3">
+        <div className="px-3 pb-3">
           {!collapsed ? (
             <div
-              className="flex items-center gap-2 px-3 h-10 rounded-lg"
-              style={{ background: dark ? "#0F1424" : "#F4F4F6", border: `1px solid ${borderColor}` }}
+              className="flex items-center gap-2 px-3 h-9 rounded-lg"
+              style={{
+                background: dark ? "#0F1424" : "#F6F6F7",
+              }}
             >
-              <Icon name="Search" size={14} style={{ color: mutedColor }} />
+              <Icon name="Search" size={13} style={{ color: iconMuted }} />
               <input
                 placeholder="Search"
-                className="bg-transparent outline-none flex-1 text-sm"
-                style={{ color: textColor }}
+                className="bg-transparent outline-none flex-1 text-[13px] placeholder:text-current"
+                style={{ color: mutedColor }}
               />
               <span
                 className="text-[10px] px-1.5 py-0.5 rounded font-medium"
                 style={{
-                  background: dark ? "#161B29" : "#E6E7EA",
+                  background: dark ? "#161B29" : "#ECECEE",
                   color: mutedColor,
                 }}
               >
@@ -199,20 +207,20 @@ const Index = () => {
             </div>
           ) : (
             <button
-              className="w-10 h-10 mx-auto rounded-lg flex items-center justify-center transition-colors"
-              style={{ background: dark ? "#0F1424" : "#F4F4F6", color: mutedColor }}
+              className="w-9 h-9 mx-auto rounded-lg flex items-center justify-center"
+              style={{ background: dark ? "#0F1424" : "#F6F6F7", color: iconMuted }}
             >
-              <Icon name="Search" size={14} />
+              <Icon name="Search" size={13} />
             </button>
           )}
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto px-3 pb-3">
-          {SECTIONS.map((section) => (
-            <div key={section.title} className="mt-3">
+        <nav className="flex-1 overflow-y-auto px-3 pb-2">
+          {SECTIONS.map((section, sIdx) => (
+            <div key={section.title} className={sIdx > 0 ? "mt-4" : "mt-1"}>
               <div
-                className="px-3 mb-2 text-[10px] font-semibold tracking-[0.22em] uppercase"
+                className={`text-[10px] font-semibold tracking-[0.22em] uppercase mb-2 ${collapsed ? "text-center" : "px-3"}`}
                 style={{ color: mutedColor }}
               >
                 {collapsed ? section.short : section.title}
@@ -227,25 +235,37 @@ const Index = () => {
                         onClick={() => setActive(item.label)}
                         onMouseEnter={() => setHover(item.label)}
                         onMouseLeave={() => setHover(null)}
-                        className="w-full flex items-center gap-3 rounded-lg transition-colors duration-200"
+                        className="w-full flex items-center gap-3 rounded-lg transition-colors duration-150"
                         style={{
-                          height: 40,
+                          height: collapsed ? 38 : 36,
                           padding: collapsed ? 0 : "0 12px",
                           justifyContent: collapsed ? "center" : "flex-start",
-                          background: isActive ? accentSoft : isHover && !collapsed ? (dark ? "#0F1424" : "#F4F4F6") : "transparent",
+                          background: isActive
+                            ? accentSoft
+                            : isHover && !collapsed
+                            ? (dark ? "#0F1424" : "#F6F6F7")
+                            : "transparent",
                           color: isActive ? accent : textColor,
                         }}
                       >
-                        <Icon name={item.icon} size={collapsed ? 18 : 17} />
+                        <Icon
+                          name={item.icon}
+                          size={collapsed ? 18 : 16}
+                          style={{ color: isActive ? accent : iconMuted }}
+                        />
                         {!collapsed && (
                           <>
-                            <span className="text-sm font-medium flex-1 text-left">{item.label}</span>
+                            <span className="text-[13px] font-medium flex-1 text-left" style={{ color: isActive ? accent : textColor }}>
+                              {item.label}
+                            </span>
                             {item.badge && (
                               <span
                                 className="text-[10px] font-semibold px-1.5 py-0.5 rounded"
                                 style={{
                                   background: item.badge.tone === "warning" ? "#F5B544" : accent,
                                   color: "#FFFFFF",
+                                  minWidth: 28,
+                                  textAlign: "center",
                                 }}
                               >
                                 {item.badge.text}
@@ -276,34 +296,23 @@ const Index = () => {
         </nav>
 
         {/* Footer icons */}
-        <div className="px-3 py-3" style={{ borderTop: `1px solid ${borderColor}` }}>
+        <div className="px-3 py-3">
           {!collapsed ? (
-            <div className="flex items-center justify-around mb-3">
+            <div className="flex items-center justify-around">
               {(["Bell", "MessageCircle", "Inbox", "HelpCircle"] as const).map((ic) => (
                 <button
                   key={ic}
-                  className="w-9 h-9 rounded-md flex items-center justify-center transition-colors"
-                  style={{ color: mutedColor }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = accentSoft;
-                    e.currentTarget.style.color = accent;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                    e.currentTarget.style.color = mutedColor;
-                  }}
+                  className="w-8 h-8 rounded-md flex items-center justify-center"
+                  style={{ color: iconMuted }}
                 >
-                  <Icon name={ic} size={16} />
+                  <Icon name={ic} size={15} />
                 </button>
               ))}
             </div>
           ) : (
-            <div className="flex justify-center mb-3">
-              <button
-                className="w-9 h-9 rounded-md flex items-center justify-center"
-                style={{ color: mutedColor }}
-              >
-                <Icon name="Bell" size={16} />
+            <div className="flex justify-center">
+              <button className="w-8 h-8 rounded-md flex items-center justify-center" style={{ color: iconMuted }}>
+                <Icon name="Bell" size={15} />
               </button>
             </div>
           )}
@@ -311,19 +320,17 @@ const Index = () => {
 
         {/* User */}
         <div
-          className="px-3 py-3 flex items-center"
+          className="px-3 py-3"
           style={{ borderTop: `1px solid ${borderColor}` }}
         >
           {!collapsed ? (
             <button
-              className="w-full flex items-center gap-3 px-2 py-1.5 rounded-lg transition-colors"
-              onMouseEnter={(e) => (e.currentTarget.style.background = accentSoft)}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+              className="w-full flex items-center gap-2.5 px-1.5 py-1.5 rounded-lg"
               onClick={() => setCollapsed(true)}
             >
               <div className="relative shrink-0">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-white text-sm"
+                  className="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-white text-xs"
                   style={{ background: accent }}
                 >
                   M
@@ -333,15 +340,20 @@ const Index = () => {
                   style={{ background: "#22C55E", border: `2px solid ${sidebarBg}` }}
                 />
               </div>
-              <span className="text-sm font-medium truncate flex-1 text-left" style={{ color: textColor }}>
+              <span className="text-[13px] font-medium truncate flex-1 text-left" style={{ color: textColor }}>
                 Mahfuzul Islam Nabil
               </span>
-              <Icon name="ChevronRight" size={14} style={{ color: accent }} />
+              <div
+                className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                style={{ border: `1px solid ${accent}`, color: accent }}
+              >
+                <Icon name="ChevronRight" size={11} />
+              </div>
             </button>
           ) : (
-            <div className="relative mx-auto">
+            <div className="relative mx-auto w-8 h-8">
               <div
-                className="w-9 h-9 rounded-full flex items-center justify-center font-semibold text-white text-sm"
+                className="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-white text-xs"
                 style={{ background: accent }}
               >
                 M
@@ -355,29 +367,43 @@ const Index = () => {
         </div>
       </aside>
 
-      {/* Content area */}
-      <main className="flex-1 p-10">
-        <div className="max-w-3xl">
-          <div
-            className="text-[10px] font-semibold tracking-[0.22em] uppercase mb-2"
-            style={{ color: mutedColor }}
-          >
+      {/* Content area — компактный дашборд */}
+      <main className="flex-1 p-8">
+        <div className="max-w-2xl">
+          <div className="text-[10px] font-semibold tracking-[0.22em] uppercase mb-1.5" style={{ color: mutedColor }}>
             {active}
           </div>
-          <h1
-            className="font-cormorant text-5xl font-semibold leading-tight mb-3"
-            style={{ color: textColor }}
-          >
-            Привет, Mahfuzul.
+          <h1 className="text-2xl font-semibold tracking-tight mb-1" style={{ color: textColor }}>
+            Привет, Mahfuzul
           </h1>
-          <p className="text-base leading-relaxed max-w-xl" style={{ color: mutedColor }}>
-            Это рабочее пространство DesignLib. Используй меню слева для навигации.
-            Переключи тему через шестерёнку наверху меню — доступны светлый
+          <p className="text-[13px] leading-relaxed max-w-md" style={{ color: mutedColor }}>
+            Переключи тему через шестерёнку в шапке меню — доступны
             <span style={{ color: textColor }}> #F2F2F2 </span>
-            и тёмный
-            <span style={{ color: textColor }}> #0A0F1D </span>
-            режимы.
+            и
+            <span style={{ color: textColor }}> #0A0F1D</span>.
           </p>
+
+          {/* Маленькие карточки */}
+          <div className="grid grid-cols-3 gap-3 mt-6 max-w-lg">
+            {[
+              { label: "Активных задач", value: "12" },
+              { label: "Проектов", value: "4" },
+              { label: "Команда", value: "8" },
+            ].map((s) => (
+              <div
+                key={s.label}
+                className="p-3 rounded-xl"
+                style={{ background: sidebarBg, border: `1px solid ${borderColor}` }}
+              >
+                <div className="text-[10px] font-semibold tracking-[0.18em] uppercase mb-1" style={{ color: mutedColor }}>
+                  {s.label}
+                </div>
+                <div className="text-xl font-semibold" style={{ color: textColor }}>
+                  {s.value}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </main>
     </div>
