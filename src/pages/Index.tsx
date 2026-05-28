@@ -58,8 +58,7 @@ const Index = () => {
 
   // Точные цвета как на макете
   const sidebarBg = dark ? "#0A0F1D" : "#FFFFFF";
-  const pageBg = "#F2F2F2";
-  const pageBgActual = dark ? "#1A1F2E" : "#F2F2F2";
+  const pageBg = dark ? "#0A0F1D" : "#F2F2F2";
   const textColor = dark ? "#F2F2F2" : "#0A0F1D";
   const mutedColor = dark ? "#5C6273" : "#A8ACB5";
   const iconMuted = dark ? "#7A7F8C" : "#9DA1AB";
@@ -73,7 +72,7 @@ const Index = () => {
   return (
     <div
       className="min-h-screen flex font-golos"
-      style={{ background: pageBgActual, color: textColor }}
+      style={{ background: pageBg, color: textColor }}
     >
       {/* Sidebar */}
       <aside
