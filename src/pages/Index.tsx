@@ -165,19 +165,30 @@ const Index = () => {
         </div>
 
         {/* Expand chevron (absolutely positioned next to logo) */}
-        {collapsed && (
-          <button
-            onClick={() => setCollapsed(false)}
-            className="absolute right-3 top-6 w-5 h-5 rounded-full flex items-center justify-center"
+        {/* Кнопка разворачивания/сворачивания — по центру правой границы */}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center z-40 transition-transform duration-300"
+          style={{
+            right: -12,
+            background: sidebarBg,
+            border: `1px solid ${borderColor}`,
+            color: accent,
+            boxShadow: dark
+              ? "0 2px 8px rgba(0,0,0,0.4)"
+              : "0 2px 8px rgba(10,15,29,0.08)",
+          }}
+          aria-label={collapsed ? "Развернуть" : "Свернуть"}
+        >
+          <Icon
+            name="ChevronRight"
+            size={12}
             style={{
-              background: accentSoft,
-              color: accent,
+              transform: collapsed ? "rotate(0deg)" : "rotate(180deg)",
+              transition: "transform 0.3s ease",
             }}
-            aria-label="Развернуть"
-          >
-            <Icon name="ChevronRight" size={11} />
-          </button>
-        )}
+          />
+        </button>
 
         {/* Search */}
         <div className="px-3 pb-3">
