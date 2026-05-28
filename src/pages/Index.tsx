@@ -51,6 +51,7 @@ const Index = () => {
   const [active, setActive] = useState("Goals");
   const [hover, setHover] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [sidebarHover, setSidebarHover] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -76,6 +77,8 @@ const Index = () => {
     >
       {/* Sidebar */}
       <aside
+        onMouseEnter={() => setSidebarHover(true)}
+        onMouseLeave={() => setSidebarHover(false)}
         className="relative flex flex-col h-screen sticky top-0 shrink-0 transition-all duration-300 ease-out"
         style={{
           width: collapsed ? collapsedWidth : expandedWidth,
@@ -164,19 +167,23 @@ const Index = () => {
           )}
         </div>
 
-        {/* Expand chevron (absolutely positioned next to logo) */}
-        {/* Кнопка разворачивания/сворачивания — по центру правой границы */}
+        {/* Кнопка разворачивания/сворачивания — наверху, по центру правой границы */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center z-40 transition-transform duration-300"
+          className="absolute w-6 h-6 rounded-full flex items-center justify-center z-40"
           style={{
             right: -12,
+            top: 24,
             background: sidebarBg,
             border: `1px solid ${borderColor}`,
             color: accent,
             boxShadow: dark
               ? "0 2px 8px rgba(0,0,0,0.4)"
               : "0 2px 8px rgba(10,15,29,0.08)",
+            opacity: sidebarHover ? 1 : 0,
+            transform: sidebarHover ? "scale(1)" : "scale(0.85)",
+            pointerEvents: sidebarHover ? "auto" : "none",
+            transition: "opacity 0.2s ease, transform 0.2s ease",
           }}
           aria-label={collapsed ? "Развернуть" : "Свернуть"}
         >
